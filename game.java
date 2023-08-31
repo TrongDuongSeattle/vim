@@ -25,45 +25,50 @@ public class game {
 		System.out.println("hello");
 		Random rand = new Random();
 		int num = rand.nextInt(10);	
+		/*
 		for (int i = 0; i < 9; i++) {
 			System.out.println(i + " Random Number = " + num);
 			num = rand.nextInt(10)+1;
 		}	
-		/*
+		
 			random operator generator
 			wait can you return an operator????
 				-checked stack, operator is neither value nor variable :c
 			
 		*/	
 		//System.out.println("num is " + num);
-		num = rand.nextInt(4);
+		num = rand.nextInt(10);
+		int num2 = rand.nextInt(10);
 		for (int i = 0; i < 5; i++) {
-			System.out.println("operator random = " + num);
-			num = rand.nextInt(4);
 			// if (num = last rand num) reiterate:
-		}
-		System.out.println("calling operatorRando " + operatorRandom(0,0)); 	
+			System.out.println("Num 1 is: " + num + " num2: " + num2);
+                        System.out.println("calling operatorRando(" +  num + ", " + num2 + ")" + operatorRandom(num,num2));
+			System.out.println();
+		}			
 	}
 	static int operatorRandom(int a, int b) {
-		System.out.println("we in dis");
 		Random rand = new Random();
 		int num = rand.nextInt(4); 
 		switch(num) {
 			case 0:
-			System.out.println("case 0");
-			break;
+			System.out.println("case 0,Sum");
+			return a + b;
 			
 			case 1:
-			System.out.println("case 1");
-			break;
+			System.out.println("case 1, Subtraction");
+			return a - b;
 
 			case 2:
-			System.out.println("case 2");
-			break;
+			System.out.println("case 3, multiply");
+			return a * b;
 
 			case 3: 
-			System.out.println("case 3");
-			break;
+			System.out.println("case 3, divide");
+			if (b == 0) {
+				System.out.println("0 Denominator");
+				break;
+			}
+			return a / b; 
 
 			default:
 			System.out.println("u fukd up");
