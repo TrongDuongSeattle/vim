@@ -36,15 +36,41 @@ public class game {
 			
 		*/	
 		//System.out.println("num is " + num);
-		num = rand.nextInt(4) + 1;
+		num = rand.nextInt(4);
 		for (int i = 0; i < 5; i++) {
 			System.out.println("operator random = " + num);
-			num = rand.nextInt(4) + 1;
+			num = rand.nextInt(4);
 			// if (num = last rand num) reiterate:
-		} 	
+		}
+		System.out.println("calling operatorRando " + operatorRandom(0,0)); 	
+	}
+	static int operatorRandom(int a, int b) {
+		System.out.println("we in dis");
+		Random rand = new Random();
+		int num = rand.nextInt(4); 
+		switch(num) {
+			case 0:
+			System.out.println("case 0");
+			break;
+			
+			case 1:
+			System.out.println("case 1");
+			break;
 
-		char ch = '*';
-		System.out.println(5 + ch + 3);
+			case 2:
+			System.out.println("case 2");
+			break;
+
+			case 3: 
+			System.out.println("case 3");
+			break;
+
+			default:
+			System.out.println("u fukd up");
+			break;
+		}
+
+		return 0;
 	}
 	
 }
