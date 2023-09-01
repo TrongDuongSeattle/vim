@@ -19,31 +19,33 @@
 	
 	
 */
-import java.util.Random;
+import java.util.*;
 public class game {
 	public static void main(String arg[]) {
-		System.out.println("hello");
-		Random rand = new Random();
-		int num = rand.nextInt(10);	
-		/*
-		for (int i = 0; i < 9; i++) {
-			System.out.println(i + " Random Number = " + num);
-			num = rand.nextInt(10)+1;
-		}	
+		System.out.print("Input length:");
+		Scanner sc = new Scanner(System.in);
+		int length = sc.nextInt();
 		
-			random operator generator
-			wait can you return an operator????
-				-checked stack, operator is neither value nor variable :c
-			
-		*/	
-		//System.out.println("num is " + num);
-		num = rand.nextInt(10);
+		List<Integer> list = new ArrayList<Integer>(); //used this so it'd print prettier
+		
+		 
+		
+		Random rand = new Random(); 
+		for (int i = 0; i < length; i++) {
+			list.add(rand.nextInt(10) %  (int)  System.currentTimeMillis());
+			//System.out.println(list.get(i));
+		}
+		//System.out.println("Array of numbers: " + list);
+		System.out.println(list);		
+		int num = rand.nextInt(10);	
 		int num2 = rand.nextInt(10);
 		for (int i = 0; i < 5; i++) {
 			// if (num = last rand num) reiterate:
 			System.out.println("Num 1 is: " + num + " num2: " + num2);
                         System.out.println("calling operatorRando(" +  num + ", " + num2 + ")" + operatorRandom(num,num2));
 			System.out.println();
+			num = (rand.nextInt(10) %  (int)  System.currentTimeMillis());
+			num = (rand.nextInt(10) %  (int)  System.currentTimeMillis());
 		}			
 	}
 	static int operatorRandom(int a, int b) {
