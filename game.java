@@ -9,9 +9,9 @@ public class game {
 		Scanner sc = new Scanner(System.in);
 		int length = sc.nextInt();
 		
-		//List<Integer> list = new ArrayList<Integer>(); //used this so it'd print prettier
+		List<Integer> list = new ArrayList<Integer>(); //used this so it'd print prettier
 		
-		List<Integer> list = new LinkedList<Integer>(); //used this so it'd print prettier
+		//List<Integer> list = new LinkedList<Integer>(); //used this so it'd print prettier
 		 
 		
 		Random rand = new Random(); 
@@ -23,15 +23,19 @@ public class game {
 		System.out.println(list);		
 		int num = rand.nextInt(10);	
 		int num2 = rand.nextInt(10);
-		/*
-		for (int i = 0; i < list.size() - 1; i++) {
+		int goal = list.get(0);
+
+		
+		for (int i = 1; i < list.size() - 1; i++) {
 			// if (num = last rand num) reiterate:
 			num = list.get(i); 
-			num2 = list.get(i+2); 
-			System.out.println("Num 1 is: " + num + " num2: " + num2);
-                        System.out.println("calling operatorRando(" +  num + ", " + num2 + ")" + operatorRandom(num,num2));
+			//num2 = list.get(i+1); 
+			System.out.println("Num 1 is: " + goal + " num2: " + num);
+                        System.out.println("calling operatorRando(" +  goal + ","  + num + ")" + operatorRandom(goal,num));
+			goal = operatorRandom(goal, list.get(i));
 			System.out.println();
-		}*/
+		}
+		System.out.println("Final Number: " + goal);
 
 	}
 	static int operatorRandom(int a, int b) {
