@@ -15,6 +15,12 @@ is there a point to remembering order of ops for verification algo?
 	if (userinput == 'some char')
 
 
+later on 09/01....
+I'm gonna stick with the way generated is the only way to form the answer
+since we don't know how to make a GUI really yet, let's just do it old school and just have user enter it in one by one:
+	okay, maybe we'll figure out a way to evaluate 
+	
+for now, not randomizing numbers
 */
 import java.util.*;
 public class game {
@@ -22,24 +28,90 @@ public class game {
 		System.out.print("Input length: ");
 		Scanner sc = new Scanner(System.in);
 		int length = sc.nextInt();
+		int operationListLength = length - 1;
 		
 		List<Integer> list = new ArrayList<Integer>(); //used this so it'd print prettier
 		 
 		
 		Random rand = new Random(); 
 		for (int i = 0; i < length; i++) {
-			list.add((rand.nextInt(8 + 1)) %  (int)  System.currentTimeMillis());
+			list.add((rand.nextInt(8) + 1) %  (int)  System.currentTimeMillis());
 		}
 		System.out.println(list);		
-		int num = list.get(0); 
 		int goal = list.get(0);
 
-		
+		List<Character> keyList = new ArrayList<Character>();
 		for (int i = 1; i < list.size(); i++) {
-			goal = operatorRandom(goal, list.get(i));
+			goal = operatorRandomTest(goal, list.get(i),keyList); //to see answer 
+		
 		}
+		System.out.println("Answer Key: " + keyList);	
 		System.out.println("Final value: " + goal);
+		System.out.println();	
+		System.out.println("Enter the operations in order from left to right");
 
+		List<Character> charList = new ArrayList<Character>();
+		//account for wrong input
+		for (int i = 0; i < operationListLength; i++) { //1 less operation than numbers
+			System.out.print("Enter operation " + (i + 1) + "/" + operationListLength +": ");	
+			charList.add(sc.next().charAt(0));
+		}
+		System.out.println();	
+		System.out.println("charList: " + charList);	
+		boolean winLoss = listComparator(keyList, charList);
+		if(winLoss){
+			System.out.println("w");
+		}
+		
+
+	}
+	/*
+	gives answer 
+	*/
+	static boolean listComparator(List<Character> keyList, List<Character> charList) {
+		for (int i = 0; i < keyList.size(); i++) {
+			if (keyList.get(i) != charList.get(i)) {
+				System.out.println("Incorrect Guess");
+				return false;
+			}
+		}
+		return true;
+	}
+		
+	static int operatorRandomTest(int a, int b, List<Character> charList) {
+		Random rand = new Random();
+		int num = rand.nextInt(4); 
+		switch(num) {
+			case 0:
+			System.out.println("+");
+			charList.add('+');
+			return a + b;
+			
+			case 1:
+			System.out.println("-");
+			charList.add('-');
+			return a - b;
+
+			case 2:
+			System.out.println("*");
+			charList.add('*');
+			return a * b;
+
+			case 3: 
+			System.out.println("/");
+			 if (a / b == 0 || a % b != 0 || b == 0) {
+				System.out.println();
+				System.out.println("Recursive case because you're a badass");
+				return operatorRandom(a, b); //yeaaaaa im a fukn badass
+			}
+			charList.add('/');
+			return a / b; 
+
+			default:
+			System.out.println("u fukd up");
+			break;
+		}
+		return 0;
 	}
 	static int operatorRandom(int a, int b) {
 		Random rand = new Random();
@@ -52,7 +124,7 @@ public class game {
 			return a - b;
 
 			case 2:
-			return a * b;
+			return a * b;	
 
 			case 3: 
 			 if (a / b == 0 || a % b != 0 || b == 0) {
