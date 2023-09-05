@@ -1,33 +1,24 @@
 /*
-09/01/23:
-Algorithm works now, uses recursion ;)) in the event a number doesn't divide evenly
-we now  have at least one valid equation for the number. 
+09/04/23
+digits does not allow for division of non divisible numbers it 2/5 
+always gives 6 numbers
+does not allow negatives, in other words wrong input not allowed
+evaluates user input and then matches to goal
+	order of operations can change
+	edit operatorRandom to evaluate use input as well
 
-What's the premise?
-randomize order of numbers?
-
-How to verify user answer? build a friggin calculator?
-take user input as an array or a way to keep order, switch - case: and update goal?
-	then if their goal matches this.goal ... that seems rather long but it would cover the case where user finds a different way to get this.goal 
-
-is there a point to remembering order of ops for verification algo?
-	-could just direct match chars this way
-	if (userinput == 'some char')
+there is an undo button
+allows you to randomly select ints and ops 
+	have verified way
+		just allow user to randomly select pairs 
 
 
-later on 09/01....
-I'm gonna stick with the way generated is the only way to form the answer
-since we don't know how to make a GUI really yet, let's just do it old school and just have user enter it in one by one:
-	okay, maybe we'll figure out a way to evaluate 
-	
-for now, not randomizing numbers
 */
 import java.util.*;
 public class game {
 	public static void main(String arg[]) {
-		System.out.print("Input length: ");
 		Scanner sc = new Scanner(System.in);
-		int length = sc.nextInt();
+		int length = 6;
 		int operationListLength = length - 1;
 		
 		List<Integer> list = new ArrayList<Integer>(); //used this so it'd print prettier
@@ -40,14 +31,16 @@ public class game {
 		System.out.println(list);		
 		int goal = list.get(0);
 
+		int operator = rand.nextInt(4) %  (int)  System.currentTimeMillis();
 		List<Character> keyList = new ArrayList<Character>();
 		for (int i = 1; i < list.size(); i++) {
-			goal = operatorRandomTest(goal, list.get(i),keyList); //to see answer 
-		
+			goal = operatorRandomTest(goal, list.get(i),keyList, operator); //to see answer 
+			operator = rand.nextInt(4) %  (int)  System.currentTimeMillis();		
 		}
 		System.out.println("Answer Key: " + keyList);	
 		System.out.println("Final value: " + goal);
 		System.out.println();	
+
 		System.out.println("Enter the operations in order from left to right");
 
 		List<Character> charList = new ArrayList<Character>();
@@ -65,9 +58,17 @@ public class game {
 		
 
 	}
+	static void getUserInput(Scanner sc, ArrayList list) {
+		/*
+		user can choose number and then operation;
+		oh but the recursive case won't work for evaluation...(set a flag xD how complicated could it get?)
+
+		*/
+	}
 	/*
 	gives answer 
 	*/
+	
 	static boolean listComparator(List<Character> keyList, List<Character> charList) {
 		for (int i = 0; i < keyList.size(); i++) {
 			if (keyList.get(i) != charList.get(i)) {
@@ -78,10 +79,9 @@ public class game {
 		return true;
 	}
 		
-	static int operatorRandomTest(int a, int b, List<Character> charList) {
-		Random rand = new Random();
-		int num = rand.nextInt(4); 
-		switch(num) {
+	static int operatorRandomTest(int a, int b, List<Character> charList, int operator) {
+		Random rand = new Random(); // this could definitely be better;
+		switch(operator) {
 			case 0:
 			System.out.println("+");
 			charList.add('+');
@@ -89,6 +89,10 @@ public class game {
 			
 			case 1:
 			System.out.println("-");
+			if (a - b < 0) {
+				operator = rand.nextInt(4) %  (int)  System.currentTimeMillis();		 
+				return operatorRandomTest(a, b, charList, operator);
+			}
 			charList.add('-');
 			return a - b;
 
@@ -102,7 +106,8 @@ public class game {
 			 if (a / b == 0 || a % b != 0 || b == 0) {
 				System.out.println();
 				System.out.println("Recursive case because you're a badass");
-				return operatorRandom(a, b); //yeaaaaa im a fukn badass
+				operator = rand.nextInt(3) % (int) System.currentTimeMillis(); 
+				return operatorRandomTest(a, b, charList,operator); //yeaaaaa im a fukn badass
 			}
 			charList.add('/');
 			return a / b; 
