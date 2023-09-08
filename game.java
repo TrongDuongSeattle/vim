@@ -25,17 +25,16 @@ public class game {
 		Scanner sc = new Scanner(System.in);
 		int length = 6;
 		int operationListLength = length - 1;
-		
 		List<Integer> list = new LinkedList<Integer>(); //used this so it'd print prettier
-		 
-		
 		Random rand = new Random(); 
 		for (int i = 0; i < length; i++) {
 			list.add((rand.nextInt(8) + 1) %  (int)  System.currentTimeMillis());
 		}
 		System.out.println(list);		
-		int goal = list.get(0);
 
+
+
+		int goal = list.get(0);
 		int operator = rand.nextInt(4) %  (int)  System.currentTimeMillis();
 		List<Character> keyList = new LinkedList<Character>();
 		for (int i = 1; i < list.size(); i++) {
@@ -44,32 +43,61 @@ public class game {
 		}
 		System.out.println("Answer Key: " + keyList);	
 		System.out.println("Final value: " + goal);
+
+
 		System.out.println();	
 
-		System.out.println("Enter the operations in order from left to right");
+		getUserInput(sc, list);
 
-		List<Character> charList = new LinkedList<Character>();
-		//account for wrong input
-		for (int i = 0; i < operationListLength; i++) { //1 less operation than numbers
-			System.out.print("Enter operation " + (i + 1) + "/" + operationListLength +": ");	
-			//maybe call a function that does verifies input and keeps calling the userinput function maybe
-			charList.add(sc.next().charAt(0));
-		}
-		System.out.println();	
-		System.out.println("charList: " + charList);	
-		boolean winLoss = listComparator(keyList, charList);
-		if(winLoss){
-			System.out.println("w");
 		}
 		
 
-	}
-	static void getUserInput(Scanner sc, LinkedList list) {
+	
+	static void getUserInput(Scanner sc, List<Integer> list){
 		/*
-		user can choose number and then operation;
-		oh but the recursive case won't work for evaluation...(set a flag xD how complicated could it get?)
+		Scanner in this case to substitute for digits GUI
+		but user is to select a number, and opeeration, then a number, value is then printed.
+
+		There is an undo button
+			immediately create a copy?
 		
-		whatever the case, this is to return the user value step by step;
+		LinkedLists are passed by reference
+
+		*/
+		//If I create another linked list and set that = to original passed list...wha
+		int num1;
+		int num2; 
+		char ch;
+		List<Integer> listCopy = new LinkedList<Integer>();
+		listCopy.addAll(list);
+		System.out.println("Enter the operations in order from left to right");
+		List<Integer> undoList= new LinkedList<Integer>();
+		//technically there is a gui so no wrong input can be provided...i think...
+		for (int i = 0; i < 5; i++) { //1 less operation than numbers
+			System.out.println("Operation " + (i + 1) + "/5");
+			System.out.println(listCopy);	
+			System.out.print("Select number: ");
+			num1 = sc.nextInt();
+			undoList.add(num1);
+			listCopy.remove((Integer) num1);
+
+			System.out.print("Select operation: ");
+			ch = sc.next().charAt(0);	
+			System.out.println("Select number: ");	
+			num2 = sc.nextInt();
+			undoList.add(num2);
+			listCopy.remove((Integer) num2);
+			//copy of list, 
+			//operate on values
+				//append values to end of list
+			//rm values
+			inputEvaluator(num1,num2,ch);
+		}
+		//if user input is undo...
+		/*
+		create another list, moves
+		as numbers get operated on	
+			
 		*/
 	}
 	/*
@@ -90,28 +118,28 @@ public class game {
 		prints out result
 
 	*/		
-	static int inputEvaluator(int a, int b, int operator) {	
-		switch(operator) {
-			case 0:
-			System.out.println(a + "+" + b " = " a + b);
+	static int inputEvaluator(int a, int b, char ch) {	
+		switch(ch) {
+			case '+':
+			System.out.println(a + "+" + b + " = " + (a + b));
 			return a + b;
 			
-			case 1:
-			System.out.println(a + "-" + b " = " a - b);
+			case '-':
+			System.out.println(a + "-" + b +  " = " + (a - b));
 			if (a - b < 0) {
 			//maybe just take care of it in calling function?
-			
+			//do nothing	
 			//don't allow, redo
 				return -1;
 			}
 			return a - b;
 
-			case 2:
-			System.out.println(a + "*" + b " = " a * b);
+			case '*':
+			System.out.println(a + "*" + b + " = " +  a * b);
 			return a * b;
 
-			case 3: 
-			System.out.println(a + "/" + b " = " a / b);
+			case '/': 
+			System.out.println(a + "/" + b + " = " +  a / b);
 			 if (a / b == 0 || a % b != 0 || b == 0) {
 				 return -1;
 			}
@@ -123,16 +151,10 @@ public class game {
 		}
 		return 0;
 	}
-	static boolean listComparator(List<Character> keyList, List<Character> charList) {
-		for (int i = 0; i < keyList.size(); i++) {
-			if (keyList.get(i) != charList.get(i)) {
-				System.out.println("Incorrect Guess");
-				return false;
-			}
-		}
-		return true;
-	}
-		
+	//provides longest and shortest answer 	
+	/* 
+		what if we randomly generate a number 
+	*/
 	static int operatorRandomTest(int a, int b, List<Character> charList, int operator) {
 		Random rand = new Random(); // this could definitely be better;
 		switch(operator) {
@@ -172,54 +194,7 @@ public class game {
 		}
 		return 0;
 	}
-	static int operatorRandom(int a, int b) {
-		Random rand = new Random();
-		int num = rand.nextInt(4); 
-		switch(num) {
-			case 0:
-			return a + b;
-			
-			case 1:
-			return a - b;
-	static int operatorRandomTest(int a, int b, List<Character> charList, int operator) {
-		Random rand = new Random(); // this could definitely be better;
-		switch(operator) {
-			case 0:
-			System.out.println("+");
-			charList.add('+');
-			return a + b;
-			
-			case 1:
-			System.out.println("-");
-			if (a - b < 0) {
-				operator = rand.nextInt(4) %  (int)  System.currentTimeMillis();		 
-				return operatorRandomTest(a, b, charList, operator);
-			}
-			charList.add('-');
-			return a - b;
-
-			case 2:
-			System.out.println("*");
-			charList.add('*');
-			return a * b;
-
-			case 3: 
-			System.out.println("/");
-			 if (a / b == 0 || a % b != 0 || b == 0) {
-				System.out.println();
-				System.out.println("Recursive case because you're a badass");
-				operator = rand.nextInt(3) % (int) System.currentTimeMillis(); 
-				return operatorRandomTest(a, b, charList,operator); //yeaaaaa im a fukn badass
-			}
-			charList.add('/');
-			return a / b; 
-
-			default:
-			System.out.println("u fukd up");
-			break;
-		}
-		return 0;
-	}
+	
 	static int operatorRandom(int a, int b) {
 		Random rand = new Random();
 		int num = rand.nextInt(4); 
