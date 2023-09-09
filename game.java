@@ -19,6 +19,7 @@ user can select numbers and operations, prints out result
 operatorRandom cannot be used to evaluate and generaete
 	could override it or something but maybe make 2 to keep it simple
 */
+import java.sql.SQLOutput;
 import java.util.*;
 public class game {
 	public static void main(String arg[]) {
@@ -65,48 +66,51 @@ public class game {
 		int num2; 
 		char ch;
 		int result;
-		List<Integer> undoList= new LinkedList<Integer>();
-		List<Integer> listCopy = new LinkedList<Integer>();
+		LinkedList<Integer> undoList= new LinkedList<Integer>();
+		LinkedList<Integer> listCopy = new LinkedList<Integer>();
 
 		listCopy.addAll(list);
 		System.out.println("Enter the operations in order from left to right");
 		for (int i = 0; i < 5; i++) { //1 less operation than numbers
-			if (i > 0 && sc.hasNextInt()) {
+			    System.out.println(goal);
 				System.out.println("Operation " + (i + 1) + "/5");
 				System.out.println(listCopy);	
 				System.out.print("Select number: ");
+				if (i > 0) {
+					System.out.print("\n" + "Select 'R' to undo last operation: ");
+				}
+			if (sc.hasNextInt()) {
 				num1 = sc.nextInt();
 				undoList.add(num1);
 				listCopy.remove((Integer) num1);
 
 				System.out.print("Select operation: ");
 				ch = sc.next().charAt(0);	
-				System.out.println("Select number: ");	
+				System.out.print("Select number: ");
 				num2 = sc.nextInt();
 				undoList.add(num2);
 				listCopy.remove((Integer) num2);
 
-				//copy of list, 
-				//operate on values
-				//append values to end of list
-				//rm values
 				result = inputEvaluator(num1, num2, ch);
 				if (result == goal) { 
 					System.out.println("Nice.");
 					return;
 				}
 			//this is supposed to be a button
-			} else if (sc.next().charAt(0) == 'r') {
+			} else if (sc.next().toLowerCase().charAt(0) == 'r') {
 				System.out.println("You're on the right track");
+				System.out.println(undoList);
+				num1 = undoList.pop();
+				num2 = undoList.pop();
+				System.out.println(undoList);
+				listCopy.add(list.indexOf(num1),num1);
+				listCopy.add(list.indexOf(num2),num2);//adding a value whose index is beyond the current size is bad throws error
+				//System.out.println(listCopy);
+				i -= 2;
+
 			}
-			
+			System.out.println();
 		}
-		//if user input is undo...
-		/*
-		create another list, moves
-		as numbers get operated on	
-			
-		*/
 	}
 	/*
 	gives answer 
@@ -129,11 +133,11 @@ public class game {
 	static int inputEvaluator(int a, int b, char ch) {	
 		switch(ch) {
 			case '+':
-			System.out.println(a + "+" + b + " = " + (a + b));
+			System.out.println(a + " + " + b + " = " + (a + b));
 			return a + b;
 			
 			case '-':
-			System.out.println(a + "-" + b +  " = " + (a - b));
+			System.out.println(a + " - " + b +  " = " + (a - b));
 			if (a - b < 0) {
 			//maybe just take care of it in calling function?
 			//do nothing	
@@ -143,11 +147,11 @@ public class game {
 			return a - b;
 
 			case '*':
-			System.out.println(a + "*" + b + " = " +  a * b);
+			System.out.println(a + " * " + b + " = " +  a * b);
 			return a * b;
 
 			case '/': 
-			System.out.println(a + "/" + b + " = " +  a / b);
+			System.out.println(a + " / " + b + " = " +  a / b);
 			 if (a / b == 0 || a % b != 0 || b == 0) {
 				 return -1;
 			}
