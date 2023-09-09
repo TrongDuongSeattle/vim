@@ -47,50 +47,59 @@ public class game {
 
 		System.out.println();	
 
-		getUserInput(sc, list);
+		getUserInput(sc, list, goal);
 
 		}
 		
 
-	
-	static void getUserInput(Scanner sc, List<Integer> list){
-		/*
-		There is an undo button
-			immediately create a copy?
-		
-		LinkedLists are passed by reference
+	static void getUserInput(Scanner sc, List<Integer> list, int goal){
+		/*			
+		by using 2 stacks, the order is not preserved
+		by saving state, only the last order is preserved
+		technically there is a gui so no wrong input can be provided...i think...
+		If I create another linked list and set that = to original passed list...wha
 
+		do{} while input != r?
 		*/
-		//If I create another linked list and set that = to original passed list...wha
 		int num1;
 		int num2; 
 		char ch;
-		int result
+		int result;
+		List<Integer> undoList= new LinkedList<Integer>();
 		List<Integer> listCopy = new LinkedList<Integer>();
+
 		listCopy.addAll(list);
 		System.out.println("Enter the operations in order from left to right");
-		List<Integer> undoList= new LinkedList<Integer>();
-		//technically there is a gui so no wrong input can be provided...i think...
 		for (int i = 0; i < 5; i++) { //1 less operation than numbers
-			System.out.println("Operation " + (i + 1) + "/5");
-			System.out.println(listCopy);	
-			System.out.print("Select number: ");
-			num1 = sc.nextInt();
-			undoList.add(num1);
-			listCopy.remove((Integer) num1);
+			if (i > 0 && sc.hasNextInt()) {
+				System.out.println("Operation " + (i + 1) + "/5");
+				System.out.println(listCopy);	
+				System.out.print("Select number: ");
+				num1 = sc.nextInt();
+				undoList.add(num1);
+				listCopy.remove((Integer) num1);
 
-			System.out.print("Select operation: ");
-			ch = sc.next().charAt(0);	
-			System.out.println("Select number: ");	
-			num2 = sc.nextInt();
-			undoList.add(num2);
-			listCopy.remove((Integer) num2);
-			//copy of list, 
-			//operate on values
+				System.out.print("Select operation: ");
+				ch = sc.next().charAt(0);	
+				System.out.println("Select number: ");	
+				num2 = sc.nextInt();
+				undoList.add(num2);
+				listCopy.remove((Integer) num2);
+
+				//copy of list, 
+				//operate on values
 				//append values to end of list
-			//rm values
-			result = inputEvaluator(num1, num2, ch);
-
+				//rm values
+				result = inputEvaluator(num1, num2, ch);
+				if (result == goal) { 
+					System.out.println("Nice.");
+					return;
+				}
+			//this is supposed to be a button
+			} else if (sc.next().charAt(0) == 'r') {
+				System.out.println("You're on the right track");
+			}
+			
 		}
 		//if user input is undo...
 		/*
