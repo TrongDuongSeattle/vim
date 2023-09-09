@@ -55,9 +55,6 @@ public class game {
 	
 	static void getUserInput(Scanner sc, List<Integer> list){
 		/*
-		Scanner in this case to substitute for digits GUI
-		but user is to select a number, and opeeration, then a number, value is then printed.
-
 		There is an undo button
 			immediately create a copy?
 		
@@ -68,6 +65,7 @@ public class game {
 		int num1;
 		int num2; 
 		char ch;
+		int result
 		List<Integer> listCopy = new LinkedList<Integer>();
 		listCopy.addAll(list);
 		System.out.println("Enter the operations in order from left to right");
@@ -91,7 +89,8 @@ public class game {
 			//operate on values
 				//append values to end of list
 			//rm values
-			inputEvaluator(num1,num2,ch);
+			result = inputEvaluator(num1, num2, ch);
+
 		}
 		//if user input is undo...
 		/*
